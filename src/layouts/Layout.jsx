@@ -42,14 +42,8 @@ const Layout = () => {
                         );
                     })}
                 </nav>
-                <div className="p-4 border-t border-gray-100">
-                    <button
-                        onClick={logout}
-                        className="flex items-center gap-3 w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg"
-                    >
-                        <LogOut size={20} />
-                        Logout
-                    </button>
+                <div className="p-4 border-t border-gray-100 hidden">
+
                 </div>
             </aside>
 
@@ -57,7 +51,6 @@ const Layout = () => {
             <main className="flex-1 overflow-y-auto">
                 <header className="bg-white border-b border-gray-200 p-4 md:hidden flex justify-between items-center">
                     <h1 className="font-bold text-primary">BizManager</h1>
-                    <button onClick={logout} className="text-sm text-red-600">Logout</button>
                 </header>
                 <div className="p-4 md:p-8 max-w-7xl mx-auto">
                     <Outlet />

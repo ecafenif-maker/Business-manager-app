@@ -1,14 +1,14 @@
 import express from 'express';
 import Transaction from '../models/Transaction.js';
 import Product from '../models/Product.js';
-import { protect } from '../middleware/authMiddleware.js';
+
 
 const router = express.Router();
 
 // @route   POST /api/transactions
-// @access  Private
+// @access  Public
 // Create Transaction (Sale, Income, Expense, Transfer)
-router.post('/', protect, async (req, res) => {
+router.post('/', async (req, res) => {
     const { type, items, amount } = req.body; // ...others
 
     try {
@@ -28,7 +28,6 @@ router.post('/', protect, async (req, res) => {
 
         const transaction = new Transaction({
             ...req.body,
-            user: req.user._id,
         });
 
         const createdTransaction = await transaction.save();
@@ -39,11 +38,11 @@ router.post('/', protect, async (req, res) => {
 });
 
 // @route   GET /api/transactions
-// @access  Private
+// @access  Public
 // Filter by date, type
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
     const { type, startDate, endDate, limit } = req.query;
-    const query = { user: req.user._id };
+    const query = {};
 
     if (type) query.type = type;
     if (startDate && endDate) {
@@ -64,9 +63,9 @@ router.get('/', protect, async (req, res) => {
 });
 
 // @route   GET /api/transactions/stats
-// @access  Private
+// @access  Public
 // Dashboard Stats
-router.get('/stats', protect, async (req, res) => {
+router.get('/stats', async (req, res) => {
     try {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -75,7 +74,6 @@ router.get('/stats', protect, async (req, res) => {
         const dailySales = await Transaction.aggregate([
             {
                 $match: {
-                    user: req.user._id,
                     type: 'sale',
                     date: { $gte: today }
                 }
@@ -86,7 +84,6 @@ router.get('/stats', protect, async (req, res) => {
         const dailyIncome = await Transaction.aggregate([
             {
                 $match: {
-                    user: req.user._id,
                     type: 'income',
                     date: { $gte: today }
                 }
@@ -102,7 +99,7 @@ router.get('/stats', protect, async (req, res) => {
         // Simplified: Balance = (Income + Sales) - Expenses
 
         const allStats = await Transaction.aggregate([
-            { $match: { user: req.user._id } },
+            { $match: {} },
             {
                 $group: {
                     _id: '$type',

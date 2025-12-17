@@ -4,30 +4,24 @@ import api from '../utils/api';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState({ name: 'Business Owner', email: 'owner@business.com', token: 'mock-token' });
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        if (storedUser) setUser(storedUser);
-        setLoading(false);
-    }, []);
+    // No need to fetch user from local storage or server as we are bypassing auth
 
     const login = async (email, password) => {
-        const { data } = await api.post('/users/login', { email, password });
-        localStorage.setItem('user', JSON.stringify(data));
-        setUser(data);
+        // Mock login
+        console.log('Login bypassed');
     };
 
     const register = async (name, email, password) => {
-        const { data } = await api.post('/users/register', { name, email, password });
-        localStorage.setItem('user', JSON.stringify(data));
-        setUser(data);
+        // Mock register
+        console.log('Register bypassed');
     };
 
     const logout = () => {
-        localStorage.removeItem('user');
-        setUser(null);
+        // Mock logout - do nothing or maybe refresh?
+        console.log('Logout bypassed');
     };
 
     return (

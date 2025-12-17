@@ -13,13 +13,10 @@ function App() {
         <Router>
             <AuthProvider>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route element={<ProtectedRoute />}>
-                        <Route element={<Layout />}>
-                            <Route path="/" element={<Dashboard />} />
-                            <Route path="/stock" element={<Stock />} />
-                            <Route path="/transactions" element={<Transactions />} />
-                        </Route>
+                    <Route element={<Layout />}>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/stock" element={<Stock />} />
+                        <Route path="/transactions" element={<Transactions />} />
                     </Route>
                 </Routes>
             </AuthProvider>

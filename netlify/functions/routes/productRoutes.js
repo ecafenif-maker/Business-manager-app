@@ -1,12 +1,12 @@
 import express from 'express';
 import Product from '../models/Product.js';
-import { protect } from '../middleware/authMiddleware.js';
+// import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 // @route   GET /api/products
-// @access  Private
-router.get('/', protect, async (req, res) => {
+// @access  Public
+router.get('/', async (req, res) => {
     try {
         const products = await Product.find({});
         res.json(products);
@@ -16,8 +16,8 @@ router.get('/', protect, async (req, res) => {
 });
 
 // @route   POST /api/products
-// @access  Private
-router.post('/', protect, async (req, res) => {
+// @access  Public
+router.post('/', async (req, res) => {
     try {
         const product = new Product(req.body);
         const createdProduct = await product.save();
@@ -28,8 +28,8 @@ router.post('/', protect, async (req, res) => {
 });
 
 // @route   PUT /api/products/:id
-// @access  Private
-router.put('/:id', protect, async (req, res) => {
+// @access  Public
+router.put('/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (product) {
@@ -45,8 +45,8 @@ router.put('/:id', protect, async (req, res) => {
 });
 
 // @route   DELETE /api/products/:id
-// @access  Private
-router.delete('/:id', protect, async (req, res) => {
+// @access  Public
+router.delete('/:id', async (req, res) => {
     try {
         const product = await Product.deleteOne({ _id: req.params.id });
         if (product.deletedCount > 0) {
